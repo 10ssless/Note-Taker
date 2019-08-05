@@ -1,0 +1,151 @@
+<style>
+    body {
+        background: ghostwhite;
+        color: rgb(191, 191, 191);
+    }
+
+    h1 {
+        text-shadow: 1px 1px 5px lightgray;
+    }
+
+    h1:hover {
+        color: gray;
+        text-shadow: 0px 0px 2px lightgray;
+    }
+
+    .main-content {
+        margin: 40px;
+        width:100%;
+    }
+
+    .notes-list {
+       position: absolute;
+       left:-22px;
+       top:30px;
+
+    }
+    
+    .notes-form {
+       position: absolute;
+       left:22px;
+       top:60px;
+
+    }
+
+    ul {
+        list-style-type: none;
+    }
+    li{
+        position: relative;
+        transition-property: color;
+        transition-duration: .5s;
+    }
+
+    li:hover {
+        color:gray;
+    }
+    li:hover .del-note{
+        color: rgb(182, 50, 50)
+    }
+
+    button {
+        border:none;
+        background:none;
+        
+    }
+    .del-note {
+        color: rgb(182, 50, 50,0);
+        position: absolute;
+        top:0px;
+        right: -30px;
+        transition-property: color;
+        transition-duration: .5s;
+    }
+    #save-note{
+        color: gray;
+        position: absolute;
+        right:0px;
+        bottom:-25px;
+        transition-property: color;
+        transition-duration: .3s;
+    }
+    #save-note:hover {
+        color: rgb(30, 30, 255);
+
+    }
+    input{
+        border: lightblue 1px solid;
+        border-radius: 3px;
+        background: none;
+        margin:2px;
+        width:250px;
+    }
+
+
+</style>
+
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>notes.</h1> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="notes-list">
+                <ul>
+                    {{#each notes}}
+                    <li>
+                        <h5>{{this.title}}</h5>
+                        <p>{{this.text}}</p>
+                        <button data-noteid="{{this.id}}" class="del-note">X</button>
+                    </li>
+                    {{/each}}
+                </ul>
+
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="notes-form">
+                <form id="new-note">
+                    <input type="text" name="title" placeholder="title"><br>
+                    <input type="text" name="text" placeholder="text"><br>
+                    <button type="submit" id="save-note">save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#new-note").on("submit",function(event){
+        event.preventDefault()
+        let new_note = {
+            text: $("#new-note [name=text]").val(),
+            title: $("#new-note [name=title]").val()
+        }
+        $.ajax("/api/notes", {
+            type: "POST",
+            data: new_note
+        }).then(
+            function () {
+                console.log("saved new note");
+                location.reload();
+            }
+        );
+    })
+    
+    $(".del-note").on("click",function(event){
+        let id = $(this).attr("data-noteid")
+        console.log("ID "+id)
+        $.ajax("/api/delete/"+id, {
+            type: "GET",
+            data: {id:id}
+        }).then(
+            function () {
+                console.log("deleted note");
+                location.reload();
+            }
+        );
+    })
+</script>
