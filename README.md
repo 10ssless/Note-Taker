@@ -3,7 +3,7 @@
 
 This is a web app to save notes on a MySQL server. Includes functionality to write, update, and delete notes. Utilizes ```MySQL```,```Express```,```Handlebars```, and ```dotenv``` modules. Site is deployed on ```Heroku```.
 
-
+\n\n
 ![Screenshot](/public/assets/images/screenshot.png "Screenshot")
 
 [Click here to try out the app](https://infinite-eyrie-19353.herokuapp.com/)
