@@ -10,11 +10,6 @@
         transition-duration: .8s;
     }
 
-    h1:hover {
-        color: gray;
-        text-shadow: 0px 0px 2px lightgray;
-    }
-
     a {
         text-decoration: none;
         color: rgb(191, 191, 191);
@@ -23,6 +18,11 @@
     a:hover {
         text-decoration: none;
         color: gray;
+    }
+
+    h1:hover {
+        color: gray;
+        text-shadow: 0px 0px 2px lightgray;
     }
 
     .main-content {
@@ -55,6 +55,10 @@
         transition-duration: .5s;
     }
 
+    li:hover {
+        color: gray;
+    }
+
     li:hover .del-note {
         color: rgb(182, 50, 50)
     }
@@ -73,7 +77,7 @@
         transition-duration: .5s;
     }
 
-    #save-note {
+    #save-edit {
         color: gray;
         position: absolute;
         right: 0px;
@@ -82,8 +86,8 @@
         transition-duration: .3s;
     }
 
-    #save-note:hover {
-        color: rgb(30, 30, 255);
+    #save-edit:hover {
+        color: rgb(30, 255, 75);
 
     }
 
@@ -118,15 +122,15 @@
                     </a>
                     {{/each}}
                 </ul>
-
+        
             </div>
         </div>
         <div class="col-md-8">
             <div class="notes-form">
-                <form id="new-note">
-                    <input type="text" id="first-input" name="title" placeholder="title"><br>
-                    <input type="text" id="second-input" name="text" placeholder="text"><br>
-                    <button type="submit" id="save-note">save</button>
+                <form id="update-note" data-noteid="{{note_edit.id}}">
+                    <input type="text" name="title"  value="{{note_edit.title}}" placeholder="title"><br>
+                    <input type="text" name="text"  value="{{note_edit.text}}" placeholder="text"><br>
+                    <button type="submit" id="save-edit">update</button>
                 </form>
             </div>
         </div>
@@ -134,19 +138,21 @@
 </div>
 
 <script type="text/javascript">
-    $("#new-note").on("submit", function (event) {
+    $("#update-note").on("submit", function (event) {
         event.preventDefault()
-        let new_note = {
-            text: $("#new-note [name=text]").val(),
-            title: $("#new-note [name=title]").val()
+
+        let edit_note = {
+            id: $("#update-note").attr("data-noteid"),
+            text: $("#update-note [name=text]").val(),
+            title: $("#update-note [name=title]").val()
         }
-        $.ajax("/notes", {
-            type: "POST",
-            data: new_note
+        $.ajax("/update/"+edit_note.id, {
+            type: "PUT",
+            data: edit_note
         }).then(
             function () {
-                console.log("saved new note");
-                location.reload();
+                console.log("updated note");
+                location.reload()
             }
         );
     })
@@ -166,6 +172,5 @@
     })
 
 
-   
 
 </script>

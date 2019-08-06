@@ -26,6 +26,7 @@ connection.connect(function (err) {
     console.log("connected as id " + connection.threadId);
 });
 
+// home screen, get all notes from db
 app.get("/", function (req, res) {
     connection.query("SELECT * FROM notes;", function (err, data) {
         if (err) {
@@ -35,7 +36,9 @@ app.get("/", function (req, res) {
     });
 });
 
-app.post("/api/notes", function (req, res) {
+
+// add new note to db
+app.post("/notes", function (req, res) {
     connection.query(`INSERT INTO notes (title,text) VALUES ( "${req.body.title}", "${req.body.text}" )`, 
     function (err, result) {
         if (err) { throw err.stack; }
@@ -43,7 +46,8 @@ app.post("/api/notes", function (req, res) {
     });
 });
 
-app.get("/api/delete/:id",function(req,res){
+// delete note from db
+app.get("/delete/:id",function(req,res){
     let id = req.params.id;
     connection.query(`DELETE FROM notes WHERE id = ${id}`,function(err, result){
         if (err) { throw err.stack; }
@@ -51,7 +55,41 @@ app.get("/api/delete/:id",function(req,res){
     })
 })
 
+// get note for user to edit
+app.get("/:id",function(req,res){
+    let id = req.params.id;
+    connection.query(`SELECT * FROM notes WHERE id = "${id}";`,function(err,result){
+        if(err) throw err.stack;
+        let note_edit = result[0];
+        connection.query(`SELECT * FROM notes;`, function(err,data){
+            if (err) throw err.stack;
+            let notes = data;
+            console.log(note_edit);
+            console.log(notes);
+            res.render("update", {notes: notes, note_edit: note_edit });
+        });
+    });
+})
 
+// update note in db
+app.put("/update/:id",function(req,res){
+    let id = req.params.id;
+    let title = req.body.title;
+    let text = req.body.text;
+    connection.query(`UPDATE notes SET title = "${title}", text = "${text}"  WHERE id = ${id};`, function(err, result){
+        if (err) throw err.stack;
+        console.log(result)
+
+        connection.query(`SELECT * FROM notes;`, function (err, data) {
+            if (err) throw err.stack;
+            let notes = data;
+            res.render("update", {
+                notes: notes,
+                note_edit: {id:null,title:null,text:null}
+            });
+        });
+    });
+})
 
 
 
