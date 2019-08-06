@@ -1,0 +1,109 @@
+body {
+    background: ghostwhite;
+    color: rgb(191, 191, 191);
+}
+
+h1 {
+    text-shadow: 1px 1px 5px lightgray;
+    transition-property: color, text-shadow;
+    transition-duration: .8s;
+}
+
+h1:hover {
+    color: gray;
+    text-shadow: 0px 0px 2px lightgray;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(191, 191, 191);
+}
+
+a:hover {
+    text-decoration: none;
+    color: gray;
+}
+
+.main-content {
+    margin: 40px;
+    width: 100%;
+}
+
+.notes-list {
+    position: absolute;
+    left: -22px;
+    top: 30px;
+    width: 200px;
+
+}
+
+.notes-form {
+    position: absolute;
+    left: 22px;
+    top: 60px;
+
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    position: relative;
+    transition-property: color;
+    transition-duration: .5s;
+}
+
+li:hover .del-note {
+    color: rgb(182, 50, 50)
+}
+
+button {
+    border: none;
+    background: none;
+}
+
+.del-note {
+    color: rgb(182, 50, 50, 0);
+    position: absolute;
+    top: 0px;
+    right: -30px;
+    transition-property: color;
+    transition-duration: .5s;
+}
+
+#save-note {
+    color: gray;
+    position: absolute;
+    right: 0px;
+    bottom: -25px;
+    transition-property: color;
+    transition-duration: .3s;
+}
+
+#save-note:hover {
+    color: rgb(30, 30, 255);
+
+}
+
+#save-edit {
+    color: gray;
+    position: absolute;
+    right: 0px;
+    bottom: -25px;
+    transition-property: color;
+    transition-duration: .3s;
+}
+
+#save-edit:hover {
+    color: rgb(30, 255, 75);
+
+}
+
+input {
+    border: lightblue 1px solid;
+    border-radius: 3px;
+    background: none;
+    margin: 2px;
+    width: 250px;
+}
