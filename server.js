@@ -14,14 +14,10 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-
-
 // home screen, get all notes from db
 app.get("/", function (req, res) {
     connection.query("SELECT * FROM notes;", function (err, data) {
-        if (err) {
-            return res.status(500).end();
-        }
+        if (err) throw err.stack;
         res.render("index", { notes: data });
     });
 });
@@ -68,7 +64,6 @@ app.put("/:id",function(req,res){
     let text = req.body.text;
     connection.query(`UPDATE notes SET title = "${title}", text = "${text}"  WHERE id = ${id};`, function(err, result){
         if (err) throw err.stack;
-        console.log(result)
 
         connection.query(`SELECT * FROM notes;`, function (err, data) {
             if (err) throw err.stack;
