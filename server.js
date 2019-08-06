@@ -1,7 +1,7 @@
 var express = require("express");
 var exphbs = require("express-handlebars");
-var mysql = require("mysql");
-require("dotenv").config();
+var connection = require("./db/connection.js")
+
 
 var app = express();
 
@@ -13,18 +13,8 @@ app.use(express.json());
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-var connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: process.env.LOCAL_SERVER_PSWD,
-    database: "note_taker_db"
-});
 
-connection.connect(function (err) {
-    if (err) throw err.stack;
-    console.log("connected as id " + connection.threadId);
-});
+
 
 // home screen, get all notes from db
 app.get("/", function (req, res) {
@@ -72,7 +62,7 @@ app.get("/:id",function(req,res){
 })
 
 // update note in db
-app.put("/update/:id",function(req,res){
+app.put("/:id",function(req,res){
     let id = req.params.id;
     let title = req.body.title;
     let text = req.body.text;
@@ -85,7 +75,7 @@ app.put("/update/:id",function(req,res){
             let notes = data;
             res.render("update", {
                 notes: notes,
-                note_edit: {id:null,title:null,text:null}
+                note_edit: {id:0,title:"",text:""}
             });
         });
     });

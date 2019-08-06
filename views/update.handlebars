@@ -146,13 +146,14 @@
             text: $("#update-note [name=text]").val(),
             title: $("#update-note [name=title]").val()
         }
-        $.ajax("/update/"+edit_note.id, {
+        $.ajax("/"+edit_note.id, {
             type: "PUT",
             data: edit_note
         }).then(
             function () {
                 console.log("updated note");
-                location.reload()
+                window.location = "/"
+                
             }
         );
     })
