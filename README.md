@@ -1,6 +1,8 @@
 # Note-Taker
 
+
 This is a web app to save notes on a MySQL server. Includes functionality to write, update, and delete notes. Utilizes ```MySQL```,```Express```,```Handlebars```, and ```dotenv``` modules. Site is deployed on ```Heroku```.
+
 
 ![Screenshot](/public/assets/images/screenshot.png "Screenshot")
 
@@ -12,7 +14,7 @@ Start by typing a title and text for your note and click 'save' to store it on t
 
 ### Delete
 
-Hover over any note on the left side to reveal the 'X'. On click, the client will send a ```DELETE``` request to the server to remove the note from the MySQL table permanently, and refresh the page to see the updated list of notes.
+Hover over any note on the left side to reveal the red 'X'. On click, the client will send a ```DELETE``` request to the server to remove the note from the MySQL table permanently, and refresh the page to see the updated list of notes.
 
 ### Update
 
