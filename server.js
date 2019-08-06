@@ -3,7 +3,7 @@ var exphbs = require("express-handlebars");
 var connection = require("./db/connection.js")
 
 
-var app = express();
+var router = express.Router();
 
 var PORT = process.env.PORT || 8080;
 
@@ -15,7 +15,7 @@ app.set("view engine", "handlebars");
 
 
 // home screen, get all notes from db
-app.get("/", function (req, res) {
+router.get("/", function (req, res) {
     connection.query("SELECT * FROM notes;", function (err, data) {
         if (err) throw err.stack;
         res.render("index", { notes: data });
@@ -24,7 +24,7 @@ app.get("/", function (req, res) {
 
 
 // add new note to db
-app.post("/notes", function (req, res) {
+router.post("/notes", function (req, res) {
     connection.query(`INSERT INTO notes (title,text) VALUES ( "${req.body.title}", "${req.body.text}" )`, 
     function (err, result) {
         if (err) { throw err.stack; }
@@ -33,7 +33,7 @@ app.post("/notes", function (req, res) {
 });
 
 // delete note from db
-app.get("/delete/:id",function(req,res){
+router.get("/delete/:id",function(req,res){
     let id = req.params.id;
     connection.query(`DELETE FROM notes WHERE id = ${id}`,function(err, result){
         if (err) { throw err.stack; }
@@ -42,7 +42,7 @@ app.get("/delete/:id",function(req,res){
 })
 
 // get note for user to edit
-app.get("/:id",function(req,res){
+router.get("/:id",function(req,res){
     let id = req.params.id;
     connection.query(`SELECT * FROM notes WHERE id = "${id}";`,function(err,result){
         if(err) throw err.stack;
@@ -58,7 +58,7 @@ app.get("/:id",function(req,res){
 })
 
 // update note in db
-app.put("/:id",function(req,res){
+router.put("/:id",function(req,res){
     let id = req.params.id;
     let title = req.body.title;
     let text = req.body.text;
@@ -79,6 +79,6 @@ app.put("/:id",function(req,res){
 
 
 
-app.listen(PORT, function () {
+router.listen(PORT, function () {
     console.log("Server listening on: http://localhost:" + PORT);
 });
